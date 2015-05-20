@@ -4,8 +4,8 @@ Simple chaining job for Apache Hadoop
 Repository management:
 ```xml
 <repository>
-    <id>yandex-webmaster-mvn-repo</id>
-    <url>https://raw.github.com/Xokker/yandex-webmaster-client/mvn-repo/</url>
+    <id>chaining-job-mvn-repo</id>
+    <url>https://raw.github.com/zydins/chaining-job/mvn-repo/</url>
     <snapshots>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>
