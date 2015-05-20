@@ -2,29 +2,29 @@
 <metadata modelVersion="1.1.0">
   <groupId>ru.zudin</groupId>
   <artifactId>chaining-job</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.1.0-SNAPSHOT</version>
   <versioning>
     <snapshot>
-      <timestamp>20150520.154540</timestamp>
+      <timestamp>20150520.155213</timestamp>
       <buildNumber>1</buildNumber>
     </snapshot>
-    <lastUpdated>20150520154540</lastUpdated>
+    <lastUpdated>20150520155213</lastUpdated>
     <snapshotVersions>
       <snapshotVersion>
         <extension>jar</extension>
-        <value>1.0-20150520.154540-1</value>
-        <updated>20150520154540</updated>
+        <value>0.1.0-20150520.155213-1</value>
+        <updated>20150520155213</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom</extension>
-        <value>1.0-20150520.154540-1</value>
-        <updated>20150520154540</updated>
+        <value>0.1.0-20150520.155213-1</value>
+        <updated>20150520155213</updated>
       </snapshotVersion>
       <snapshotVersion>
         <classifier>sources</classifier>
         <extension>jar</extension>
-        <value>1.0-20150520.154540-1</value>
-        <updated>20150520154540</updated>
+        <value>0.1.0-20150520.155213-1</value>
+        <updated>20150520155213</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>
