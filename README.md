@@ -1,5 +1,5 @@
 # chaining-job
-Simple chaining job for Apache Hadoop
+Simple chaining job builder for Apache Hadoop
 
 Repository management:
 ```xml
@@ -20,4 +20,17 @@ Dependency management:
     <artifactId>chaining-job</artifactId>
     <version>0.1.0</version>
 </dependency>
+```
+Usage:
+```java
+ChainingJob job = ChainingJob.Builder.instance()
+                .name("triclustering")
+                .tempDir(temp)
+                .mapper(TupleReadMapper.class, ImmutableMap.of("delimeter", ";"))
+                .reducer(TupleContextReducer.class)
+                .mapper(PrepareMapper.class)
+                .reducer(CollectReducer.class, ImmutableMap.of("threads", "2")
+                .build();
+        job.getJob(0).setNumReduceTasks(2);
+        ToolRunner.run(new Configuration(), job, new String[]{"input", "output"});
 ```
