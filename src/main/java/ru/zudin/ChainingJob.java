@@ -4,8 +4,6 @@ import net.jodah.typetools.TypeResolver;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -117,7 +115,7 @@ public class ChainingJob extends Configured implements Tool {
         public ReadyBuilder mapper(Class<? extends Mapper> cls, Map<String, String> params) throws IOException {
             if (isPrevMapper) {
                 job.setNumReduceTasks(0);
-                addParams(params);
+                addParams(params, cls);
                 chainingJob.jobs.add(job);
             }
             job = Job.getInstance(conf, chainingJob.name);
@@ -128,7 +126,7 @@ public class ChainingJob extends Configured implements Tool {
             job.setMapOutputValueClass(typeArgs[3]);
             job.setOutputKeyClass(typeArgs[2]);
             job.setOutputValueClass(typeArgs[3]);
-            addParams(params);
+            addParams(params, cls);
             isPrevMapper = true;
             return this;
         }
@@ -150,7 +148,7 @@ public class ChainingJob extends Configured implements Tool {
             job.setOutputKeyClass(typeArgs[2]);
             job.setOutputValueClass(typeArgs[3]);
             job.setReducerClass(cls);
-            addParams(params);
+            addParams(params, cls);
             chainingJob.jobs.add(job);
             job = null;
             isPrevMapper = false;
@@ -167,16 +165,17 @@ public class ChainingJob extends Configured implements Tool {
         }
 
 
-        private void addParams(Map<String, String> params) {
+        private void addParams(Map<String, String> params, Class<?> cls) {
             if (params != null) {
                 Configuration conf = job.getConfiguration();
                 for (String key : params.keySet()) {
                     String value = params.get(key);
                     if (key.equals("-M")) {
                         boolean param = Boolean.parseBoolean(value);
-                        if (param) {
+                        if (param && cls.getSimpleName().contains("Reducer")) {
                             LazyOutputFormat.setOutputFormatClass(job, TextOutputFormat.class);
-                            MultipleOutputs.addNamedOutput(job, "text", TextOutputFormat.class, Text.class, IntWritable.class);
+                            MultipleOutputs.addNamedOutput(job, "text", TextOutputFormat.class,
+                                    job.getOutputKeyClass(), job.getOutputValueClass());
                         }
                     } else {
                         conf.set(key, value);
