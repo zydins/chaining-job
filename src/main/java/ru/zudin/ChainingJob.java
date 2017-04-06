@@ -4,11 +4,16 @@ import net.jodah.typetools.TypeResolver;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.LazyOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 
 import java.io.IOException;
@@ -167,7 +172,15 @@ public class ChainingJob extends Configured implements Tool {
                 Configuration conf = job.getConfiguration();
                 for (String key : params.keySet()) {
                     String value = params.get(key);
-                    conf.set(key, value);
+                    if (key.equals("-M")) {
+                        boolean param = Boolean.parseBoolean(value);
+                        if (param) {
+                            LazyOutputFormat.setOutputFormatClass(job, TextOutputFormat.class);
+                            MultipleOutputs.addNamedOutput(job, "text", TextOutputFormat.class, Text.class, IntWritable.class);
+                        }
+                    } else {
+                        conf.set(key, value);
+                    }
                 }
             }
         }
