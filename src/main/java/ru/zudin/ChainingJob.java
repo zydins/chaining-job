@@ -8,6 +8,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.KeyValueTextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.LazyOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
@@ -176,6 +177,13 @@ public class ChainingJob extends Configured implements Tool {
                             LazyOutputFormat.setOutputFormatClass(job, TextOutputFormat.class);
                             MultipleOutputs.addNamedOutput(job, "text", TextOutputFormat.class,
                                     job.getOutputKeyClass(), job.getOutputValueClass());
+                        }
+                    } else if (key.equals("-I")) {
+                        if (cls.getSimpleName().contains("Mapper")) {
+                            String className = params.get(key);
+                            if (className.equals("KeyValueTextInputFormat")) { //TODO: support all
+                                job.setInputFormatClass(KeyValueTextInputFormat.class);
+                            }
                         }
                     } else {
                         conf.set(key, value);
