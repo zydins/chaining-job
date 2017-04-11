@@ -116,7 +116,7 @@ public class ChainingJob extends Configured implements Tool {
         public ReadyBuilder mapper(Class<? extends Mapper> cls, Map<String, String> params) throws IOException {
             if (isPrevMapper) {
                 job.setNumReduceTasks(0);
-                addParams(params, cls);
+//                addParams(params, cls);
                 chainingJob.jobs.add(job);
             }
             job = Job.getInstance(conf, chainingJob.name);
