@@ -179,12 +179,12 @@ public class ChainingJob extends Configured implements Tool {
                                     job.getOutputKeyClass(), job.getOutputValueClass());
                         }
                     } else if (key.equals("-I")) {
-                        if (cls.getSimpleName().contains("Mapper")) {
+//                        if (cls.getSimpleName().contains("Mapper")) {
                             String className = params.get(key);
                             if (className.equals("KeyValueTextInputFormat")) { //TODO: support all
                                 job.setInputFormatClass(KeyValueTextInputFormat.class);
                             }
-                        }
+//                        }
                     } else {
                         conf.set(key, value);
                     }
